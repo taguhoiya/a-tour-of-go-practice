@@ -1,9 +1,11 @@
 package main
 
-import ("fmt")
+import (
+	"fmt"
+)
 
 func main() {
-	s:= []int{2, 3, 5, 7, 11, 13}
+	s := []int{2, 3, 5, 7, 11, 13}
 	printSlice(s)
 
 	s = s[2:3] // s[2:3]が元となる配列

@@ -1,6 +1,8 @@
 package main
 
-import ("fmt")
+import (
+	"fmt"
+)
 
 func Pic(dx, dy int) [][]uint8 {
 	// 長さdyのsliceに要素が
@@ -10,8 +12,8 @@ func Pic(dx, dy int) [][]uint8 {
 	fmt.Println(yary)
 	// y_array := make([]uint8, dy)
 	for v := range yary {
-		yary[v] = make([]uint8, dx);
-		for x:= 0; x< dx; x++ {
+		yary[v] = make([]uint8, dx)
+		for x := 0; x < dx; x++ {
 			yary[v][x] = 2
 		}
 	}
@@ -21,7 +23,6 @@ func Pic(dx, dy int) [][]uint8 {
 func main() {
 	Pic(3, 4)
 }
-
 
 // Pic 関数を実装してみましょう。 このプログラムを実行すると、生成した画像が下に表示されるはずです。
 // この関数は、長さ dy のsliceに、各要素が8bitのunsigned int型で長さ dx のsliceを割り当てたものを返すように実装する必要があります。
