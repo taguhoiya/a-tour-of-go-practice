@@ -9,7 +9,7 @@ func fibonacci() func() int {
 	add := 1
 
 	return func() int {
-		sum, add = add, add + sum
+		sum, add = add, add+sum
 		return sum
 	}
 }
