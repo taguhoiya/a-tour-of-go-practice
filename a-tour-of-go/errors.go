@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"reflect"
+	"time"
 )
 
 type MyError struct {
@@ -22,7 +22,7 @@ func run() error {
 	}
 }
 
-func main () {
+func main() {
 	if err := run(); err != nil {
 		fmt.Println(reflect.TypeOf(err))
 	}

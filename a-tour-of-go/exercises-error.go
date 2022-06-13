@@ -28,4 +28,5 @@ func Sqrt(x float64) (float64, error) {
 func main() {
 	fmt.Println(Sqrt(4))
 	fmt.Println(Sqrt(-4))
+	fmt.Println(Sqrt(-4))
 }
