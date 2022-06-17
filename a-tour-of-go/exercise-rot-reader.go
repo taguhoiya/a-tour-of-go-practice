@@ -10,7 +10,7 @@ type rot13Reader struct {
 	r io.Reader
 }
 
-func (r io.Reader) Read () (int, error) {
+func (r io.Reader) Read() (int, error) {
 
 }
 
