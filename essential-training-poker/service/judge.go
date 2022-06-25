@@ -59,8 +59,11 @@ func judgeSuit(numArray []int, markArray []string) string {
 		NumCountsOverlap: numCountsOverlap,
 		UniqNumsSize:     uniqNumsSize,
 	}
-
-	outcome = conditionalJudgement(config)
+	outcome1 := make(chan string)
+	outcome = conditionalJudgement(config, outcome1)
+	if outcome == "" {
+		outcome = "ハイカード"
+	}
 	return outcome
 }
 
@@ -95,7 +98,7 @@ func uniqInt(slice []int) []int {
 func countFactor(markArray []string) int {
 	var count int
 	sizeMap := map[string]int{"C": 0, "D": 0, "H": 0, "S": 0}
-	// [H, H, S, D, S]
+
 	for _, v := range markArray {
 		sizeMap[v]++
 	}
@@ -134,8 +137,7 @@ func numArrayToSize(numArray []int) []int {
 }
 
 // return outcome(=suit)
-func conditionalJudgement(con model.ConfigJudge) string {
-	var outcome string
+func conditionalJudgement(con model.ConfigJudge, outcome1 chan string) string {
 
 	var (
 		sortNums         = con.SortNums
@@ -145,26 +147,91 @@ func conditionalJudgement(con model.ConfigJudge) string {
 		uniqNumsSize     = con.UniqNumsSize
 	)
 
-	if comparison := []int{1, 10, 11, 12, 13}; Equal(sortNums, comparison) && countMarks == 1 {
-		outcome = "ロイヤルストレートフラッシュ"
-	} else if countMarks == 1 && variation == 4 {
-		outcome = "ストレートフラッシュ"
-	} else if comparison := []int{1, 4}; Equal(numCountsOverlap, comparison) {
-		outcome = "フォーカード"
-	} else if comparison := []int{2, 3}; Equal(numCountsOverlap, comparison) {
-		outcome = "フルハウス"
-	} else if uniqNumsSize == 5 && variation == 4 {
-		outcome = "ストレート"
-	} else if countMarks == 1 && uniqNumsSize == 5 {
-		outcome = "フラッシュ"
-	} else if comparison := []int{1, 1, 3}; Equal(numCountsOverlap, comparison) {
-		outcome = "スリーカード"
-	} else if comparison := []int{1, 2, 2}; Equal(numCountsOverlap, comparison) {
-		outcome = "ツーペア"
-	} else if comparison := []int{1, 1, 1, 2}; Equal(numCountsOverlap, comparison) {
-		outcome = "ワンペア"
-	} else {
-		outcome = "ハイカード"
-	}
-	return outcome
+	go func() {
+		if comparison := []int{1, 10, 11, 12, 13}; Equal(sortNums, comparison) && countMarks == 1 {
+			outcome1 <- "ロイヤルストレートフラッシュ"
+		}
+	}()
+	go func() {
+		if countMarks == 1 && variation == 4 {
+			outcome1 <- "ストレートフラッシュ"
+		}
+	}()
+	go func() {
+		if comparison := []int{1, 4}; Equal(numCountsOverlap, comparison) {
+			outcome1 <- "フォーカード"
+		}
+	}()
+	go func() {
+		if comparison := []int{2, 3}; Equal(numCountsOverlap, comparison) {
+			outcome1 <- "フルハウス"
+		}
+	}()
+	go func() {
+		if uniqNumsSize == 5 && variation == 4 {
+			outcome1 <- "ストレート"
+		}
+	}()
+	go func() {
+		if countMarks == 1 && uniqNumsSize == 5 {
+			outcome1 <- "フラッシュ"
+		}
+	}()
+	go func() {
+		if comparison := []int{1, 1, 3}; Equal(numCountsOverlap, comparison) {
+			outcome1 <- "スリーカード"
+		}
+	}()
+	go func() {
+		if comparison := []int{1, 2, 2}; Equal(numCountsOverlap, comparison) {
+			outcome1 <- "ツーペア"
+		}
+	}()
+	go func() {
+		if comparison := []int{1, 1, 1, 2}; Equal(numCountsOverlap, comparison) {
+			outcome1 <- "ワンペア"
+		}
+	}()
+
+	//　ハイカードの処理ができない
+	msg1 := <-outcome1
+
+	close(outcome1)
+	return msg1
 }
+
+// // return outcome(=suit)
+// func conditionalJudgement(con model.ConfigJudge) string {
+// 	var outcome string
+
+// 	var (
+// 		sortNums         = con.SortNums
+// 		variation        = con.Variation
+// 		countMarks       = con.CountMarks
+// 		numCountsOverlap = con.NumCountsOverlap
+// 		uniqNumsSize     = con.UniqNumsSize
+// 	)
+
+// 	if comparison := []int{1, 10, 11, 12, 13}; Equal(sortNums, comparison) && countMarks == 1 {
+// 		outcome = "ロイヤルストレートフラッシュ"
+// 	} else if countMarks == 1 && variation == 4 {
+// 		outcome = "ストレートフラッシュ"
+// 	} else if comparison := []int{1, 4}; Equal(numCountsOverlap, comparison) {
+// 		outcome = "フォーカード"
+// 	} else if comparison := []int{2, 3}; Equal(numCountsOverlap, comparison) {
+// 		outcome = "フルハウス"
+// 	} else if uniqNumsSize == 5 && variation == 4 {
+// 		outcome = "ストレート"
+// 	} else if countMarks == 1 && uniqNumsSize == 5 {
+// 		outcome = "フラッシュ"
+// 	} else if comparison := []int{1, 1, 3}; Equal(numCountsOverlap, comparison) {
+// 		outcome = "スリーカード"
+// 	} else if comparison := []int{1, 2, 2}; Equal(numCountsOverlap, comparison) {
+// 		outcome = "ツーペア"
+// 	} else if comparison := []int{1, 1, 1, 2}; Equal(numCountsOverlap, comparison) {
+// 		outcome = "ワンペア"
+// 	} else {
+// 		outcome = "ハイカード"
+// 	}
+// 	return outcome
+// }

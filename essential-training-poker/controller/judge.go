@@ -1,11 +1,10 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"poker/model"
 	"poker/service"
-
-	"github.com/gin-gonic/gin"
 )
 
 func JudgeInput(c *gin.Context) {
