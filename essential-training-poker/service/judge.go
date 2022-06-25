@@ -52,11 +52,13 @@ func judgeSuit(numArray []int, markArray []string) string {
 	markArrayUniq := uniq(markArray)
 	countMarks := countFactor(markArrayUniq)
 
-	config := model.ConfigJudge{SortNums: sortNums,
+	config := model.ConfigJudge{
+		SortNums:         sortNums,
 		CountMarks:       countMarks,
 		Variation:        variation,
 		NumCountsOverlap: numCountsOverlap,
-		UniqNumsSize:     uniqNumsSize}
+		UniqNumsSize:     uniqNumsSize,
+	}
 
 	outcome = conditionalJudgement(config)
 	return outcome
@@ -131,6 +133,7 @@ func numArrayToSize(numArray []int) []int {
 	return responseSlice
 }
 
+// return outcome(=suit)
 func conditionalJudgement(con model.ConfigJudge) string {
 	var outcome string
 
