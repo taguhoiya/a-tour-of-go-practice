@@ -1,13 +1,14 @@
 package controller
 
 import (
-	"poker/model"
-	"github.com/gin-gonic/gin"
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"poker/middleware"
+	"poker/model"
 	"time"
 )
 
@@ -17,14 +18,20 @@ func NeedUmbrella(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	var (
+		lat       = middleware.LoadEnv("LAT")
+		lon       = middleware.LoadEnv("LON")
+		appid     = middleware.LoadEnv("WEATHER_APP_ID")
+		exclusion = middleware.LoadEnv("EXCLUSION")
+	)
+
 	req.Header.Add("content-type", "application/json")
 	q := req.URL.Query()
-	q.Add("lat", "34")
-	q.Add("lon", "135")
-	q.Add("appid", "8e55ee2e871bb393dfbc59545d05ddb3")
-	q.Add("exclude", "minutely,current,daily,alerts")
+	q.Add("lat", lat)
+	q.Add("lon", lon)
+	q.Add("appid", appid)
+	q.Add("exclude", exclusion)
 	req.URL.RawQuery = q.Encode()
-	fmt.Println(req.URL.String())
 	client := &http.Client{}
 
 	resp, err := client.Do(req)
@@ -48,15 +55,19 @@ func NeedUmbrella(c *gin.Context) {
 	currentTime := time.Now()
 	tokyo, _ := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
-			fmt.Println(err)
-			return
+		fmt.Println(err)
+		return
 	}
-	now := time.Now().In(tokyo)
-	condition := int(Bod(now).Sub(currentTime).Hours()) + 1
-	todayPops := []float64{}
-	counter := 1
-	for _, v := range weaherApi.Hourly{
-		if counter == condition + 1 {
+
+	var (
+		now       = time.Now().In(tokyo)
+		condition = int(Bod(now).Sub(currentTime).Hours()) + 1
+		todayPops = []float64{}
+		counter   = 1
+	)
+
+	for _, v := range weaherApi.Hourly {
+		if counter == condition+1 {
 			break
 		}
 		todayPops = append(todayPops, v.Pop)
@@ -79,7 +90,7 @@ func NeedUmbrella(c *gin.Context) {
 
 func Bod(t time.Time) time.Time {
 	year, month, day := t.Date()
-	return time.Date(year, month, day + 1, 0, 0, 0, 0, t.Location())
+	return time.Date(year, month, day+1, 0, 0, 0, 0, t.Location())
 }
 
 func sum(slice []float64) float64 {
