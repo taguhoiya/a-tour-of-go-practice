@@ -19,5 +19,16 @@ func main() {
 			v1.GET("/todays_weather", controller.NeedUmbrella)
 		}
 	}
+	engine.NoRoute(func(c *gin.Context) {
+    c.JSON(404, gin.H{"status": 404, "error": "エンドポイントが不正です。"})
+})
 	engine.Run(":3000")
+}
+
+func ErrorHandle() {
+	router := gin.Default()
+
+	router.NoRoute(func (c *gin.Context) {
+
+	})
 }
