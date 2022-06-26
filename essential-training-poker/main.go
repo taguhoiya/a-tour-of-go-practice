@@ -16,6 +16,7 @@ func main() {
 		v1 := bookEngine.Group("/v1")
 		{
 			v1.POST("/judge", controller.JudgeInput)
+			v1.GET("/todays_weather", controller.NeedUmbrella)
 		}
 	}
 	engine.Run(":3000")
