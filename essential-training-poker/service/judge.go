@@ -143,8 +143,8 @@ func numArrayToSize(numArray []int) []int {
 	return responseSlice
 }
 
-//// goroutine用 ////
-// return outcome(=suit)
+// //// goroutine用 ////
+// // return outcome(=suit)
 // func conditionalJudgement(con model.ConfigJudge, outcome1 chan string) string {
 
 // 	defer close(outcome1)

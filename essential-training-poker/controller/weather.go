@@ -38,6 +38,7 @@ func NeedUmbrella(c *gin.Context) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(resp)
 
 	defer resp.Body.Close()
 

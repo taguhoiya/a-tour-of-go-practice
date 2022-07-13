@@ -10,10 +10,10 @@ func main() {
 	log.Print("Hey! I'm a log message!")
 
 	log.Debug().
-	Int("EmployeeID", 1001).
-	Msg("Getting employee information")
+		Int("EmployeeID", 1001).
+		Msg("Getting employee information")
 
-log.Debug().
-	Str("Name", "John").
-	Send()
+	log.Debug().
+		Str("Name", "John").
+		Send()
 }
