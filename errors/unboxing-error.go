@@ -43,7 +43,6 @@ func main() {
 		fmt.Fprintf(os.Stderr, "file is \"%v\"\n", perr.Path)
 	}
 
-
 	defer func() {
 		if err := file.Close(); err != nil {
 			fmt.Fprintln(os.Stderr, err)

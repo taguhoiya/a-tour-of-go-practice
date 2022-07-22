@@ -30,14 +30,14 @@ func main() {
 	if err := checkFileOpen("no-exist.txt"); err != nil {
 		var perr *os.PathError
 		if errors.As(err, &perr) {
-				switch {
-				case errors.Is(err, syscall.ENOENT):
-						fmt.Fprintf(os.Stderr, "\"%v\" ファイルが存在しない\n", perr.Path)
-				default:
-						fmt.Fprintln(os.Stderr, "その他の PathError")
-				}
+			switch {
+			case errors.Is(err, syscall.ENOENT):
+				fmt.Fprintf(os.Stderr, "\"%v\" ファイルが存在しない\n", perr.Path)
+			default:
+				fmt.Fprintln(os.Stderr, "その他の PathError")
+			}
 		} else {
-				fmt.Fprintln(os.Stderr, "その他のエラー")
+			fmt.Fprintln(os.Stderr, "その他のエラー")
 		}
 		return
 	}

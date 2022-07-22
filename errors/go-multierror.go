@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"errors"
-	"syscall"
+	"fmt"
 	"github.com/hashicorp/go-multierror"
+	"os"
+	"syscall"
 )
 
 func checkFileOpen(path string) error {
@@ -21,18 +21,18 @@ func main() {
 	paths := []string{"not-exist1.txt", "not-exist2.txt"}
 	var result *multierror.Error
 	for _, path := range paths {
-			if err := checkFileOpen(path); err != nil {
-					result = multierror.Append(result, err)
-			}
+		if err := checkFileOpen(path); err != nil {
+			result = multierror.Append(result, err)
+		}
 	}
 	if err := result.ErrorOrNil(); err != nil {
-    var perr *os.PathError
-    if errors.As(err, &perr) && errors.Is(perr, syscall.ENOENT) {
-        fmt.Fprintf(os.Stderr, "\"%v\" ファイルが存在しない\n", perr.Path)
-    } else {
-        fmt.Fprintln(os.Stderr, "その他のエラー")
-    }
-}
+		var perr *os.PathError
+		if errors.As(err, &perr) && errors.Is(perr, syscall.ENOENT) {
+			fmt.Fprintf(os.Stderr, "\"%v\" ファイルが存在しない\n", perr.Path)
+		} else {
+			fmt.Fprintln(os.Stderr, "その他のエラー")
+		}
+	}
 	// Output:
 	// 2 errors occurred:
 	//     * error! : open not-exist1.txt: no such file or directory
