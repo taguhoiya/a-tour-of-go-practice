@@ -10,12 +10,14 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"time"
 )
 
 type myServer struct {
 	hellopb.UnimplementedGreetingServiceServer
 }
 
+// Unary RPCがレスポンスを返す
 func (s *myServer) Hello(ctx context.Context, req *hellopb.HelloRequest) (*hellopb.HelloResponse, error) {
 	// リクエストからnameフィールドを取り出して
 	// "Hello, [名前]!"というレスポンスを返す
@@ -23,6 +25,22 @@ func (s *myServer) Hello(ctx context.Context, req *hellopb.HelloRequest) (*hello
 		Message: fmt.Sprintf("Hello, %s!", req.GetName()),
 	}, nil
 }
+
+// Server Stream RPCがレスポンスを返す
+func (s *myServer) HelloServerStream(req *hellopb.HelloRequest, stream hellopb.GreetingService_HelloServerStreamServer) error {
+	resCount := 5
+	for i := 0; i < resCount; i++ {
+		if err := stream.Send(&hellopb.HelloResponse{
+			Message: fmt.Sprintf("[%d] Hello, %s!", i, req.GetName()),
+		}); err != nil {
+			return err
+		}
+		time.Sleep(time.Second * 1)
+	}
+	// return文でメソッドを終了させる=ストリームの終わり
+	return nil
+}
+
 
 // 自作サービス構造体のコンストラクタを定義
 func NewMyServer() *myServer {
