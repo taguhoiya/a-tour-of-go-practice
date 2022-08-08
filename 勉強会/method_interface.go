@@ -19,7 +19,7 @@ import (
 
 type Account struct {
 	FirstName string
-	LastName string
+	LastName  string
 }
 
 type Employee struct {
@@ -53,7 +53,7 @@ func (e *Employee) CheckCredits() {
 	fmt.Printf("Your current account balance is %v\n", e.Credits)
 }
 
-func main()  {
+func main() {
 	account := &Account{FirstName: "Kawasaki", LastName: "Takudai"}
 	employee := &Employee{Credits: 500.3, Account: account}
 	employee.ChangeName("Bautista")
