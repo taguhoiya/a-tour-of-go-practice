@@ -9,50 +9,29 @@ package main
 
 import (
 	"fmt"
+	"bufio"
+	"os"
 )
 
-func main() {
-	val := 0
-	var answer []int
-	fmt.Scanf("%d", &val)
-	var (
-		num     int = 1
-		nextNum int
-	)
-	if val < 2 {
-		fmt.Println(answer)
-	} else {
-		for i := 0; i <= val; i++ {
-			num, nextNum = nextNum, num+nextNum
-			answer = append(answer, nextNum)
+var (
+	scanner *bufio.Scanner
+)
+
+func main()  {
+	scanner = bufio.NewScanner(os.Stdin)
+
+	sendCount := 5
+	fmt.Printf("Please enter %d names.\n", sendCount)
+	s := 0
+	for i := 0; i < sendCount; i++ {
+		scanner.Scan()
+		name := scanner.Text()
+		if i == 4 {
+			return
+		} else {
+			fmt.Println(name)
+			s++
 		}
 		fmt.Println(answer)
 	}
 }
-
-// package main
-
-// import "fmt"
-
-// func fibonacci(n int) []int {
-// 	if n < 2 {
-// 		return make([]int, 0)
-// 	}
-
-// 	nums := make([]int, n)
-// 	nums[0], nums[1] = 1, 1
-
-// 	for i := 2; i < n; i++ {
-// 		nums[i] = nums[i-1] + nums[i-2]
-// 	}
-
-// 	return nums
-// }
-
-// func main() {
-// 	var num int
-
-// 	fmt.Print("What's the Fibonacci sequence you want? ")
-// 	fmt.Scanln(&num)
-// 	fmt.Println("The Fibonacci sequence is:", fibonacci(num))
-// }
