@@ -8,8 +8,8 @@
 package main
 
 import (
-	"fmt"
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -17,7 +17,7 @@ var (
 	scanner *bufio.Scanner
 )
 
-func main()  {
+func main() {
 	scanner = bufio.NewScanner(os.Stdin)
 
 	sendCount := 5
