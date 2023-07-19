@@ -1,5 +1,5 @@
 # goバージョン
-FROM golang:1.18.1-alpine
+FROM golang:1.20.6-alpine
 # アップデートとgitのインストール！！
 RUN apk add --update &&  apk add git
 # appディレクトリの作成
